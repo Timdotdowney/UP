@@ -116,5 +116,8 @@
   <ItemGroup>
     <None Include="Resources\SlideModel.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Ookii.Dialogs.Wpf.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
