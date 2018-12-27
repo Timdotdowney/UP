@@ -108,13 +108,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SlideModel.pdb" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\FileIO.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\FileIO.pdb" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\NetworkIO.dll" />
