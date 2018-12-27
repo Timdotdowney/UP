@@ -73,16 +73,6 @@ namespace Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] FileIO1 {
-            get {
-                object obj = ResourceManager.GetObject("FileIO1", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
         internal static byte[] NetworkIO {
             get {
                 object obj = ResourceManager.GetObject("NetworkIO", resourceCulture);
@@ -106,16 +96,6 @@ namespace Properties {
         internal static byte[] SlideModel {
             get {
                 object obj = ResourceManager.GetObject("SlideModel", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] SlideModel1 {
-            get {
-                object obj = ResourceManager.GetObject("SlideModel1", resourceCulture);
                 return ((byte[])(obj));
             }
         }

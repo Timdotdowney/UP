@@ -121,9 +121,6 @@
   <data name="FileIO" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\FileIO.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="FileIO1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\FileIO.pdb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="NetworkIO" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NetworkIO.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -132,8 +129,5 @@
   </data>
   <data name="SlideModel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SlideModel.pdb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="SlideModel1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SlideModel.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>
