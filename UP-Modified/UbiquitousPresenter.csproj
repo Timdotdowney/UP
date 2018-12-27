@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{8311E7CA-C37A-439A-951B-FBDAD15D648D}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>UbiquitousPresenter</AssemblyName>
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms">
+      <HintPath>C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\System.Windows.Forms\v4.0_4.0.0.0__b77a5c561934e089\System.Windows.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <HintPath>C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\System.Drawing\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Ink">
+      <HintPath>C:\Program Files (x86)\UCSD CSE\Ubiquitous Presenter Client\Microsoft.Ink.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>C:\windows\Microsoft.Net\assembly\GAC_MSIL\System\v4.0_4.0.0.0__b77a5c561934e089\System.dll</HintPath>
+    </Reference>
+    <Reference Include="SlideModel">
+      <HintPath>E:\up\SlideModel.dll</HintPath>
+    </Reference>
+    <Reference Include="NetworkIO">
+      <HintPath>E:\up\NetworkIO.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <HintPath>C:\windows\assembly\GAC_MSIL\System.Drawing\2.0.0.0__b03f5f7f11d50a3a\System.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="FileIO">
+      <HintPath>E:\up\FileIO.dll</HintPath>
+    </Reference>
+    <Reference Include="Ookii.Dialogs.Wpf">
+      <HintPath>C:\Program Files (x86)\UCSD CSE\Ubiquitous Presenter Client\Ookii.Dialogs.Wpf.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="InstructorClient.Properties\Resources.cs" />
+    <Compile Include="InstructorClient\ChangeUploadQueueStatusDelegate.cs" />
+    <Compile Include="InstructorClient\CustomColors.cs" />
+    <Compile Include="InstructorClient\CustomPenAttributes.cs" />
+    <Compile Include="InstructorClient\DimensionChooser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InstructorClient\InkChangedDelegate.cs" />
+    <Compile Include="InstructorClient\InkPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="InstructorClient\MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InstructorClient\PenInfo.cs" />
+    <Compile Include="InstructorClient\PenSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InstructorClient\SlideList.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="InstructorClient\SlideListThumb.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="InstructorClient\SlidePreviewPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InstructorClient\SubmissionPreviewPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="InstructorClient\SubmissionThumb.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="InstructorClient\UpdateMainSlideDelegate.cs" />
+    <Compile Include="InstructorClient\UpdateMonitorsDelegate.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="InstructorClient.Properties\Resources.resx" />
+    <EmbeddedResource Include="InstructorClient\MainWindow.resx" />
+    <EmbeddedResource Include="InstructorClient\Resources.PresenterIcon.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
