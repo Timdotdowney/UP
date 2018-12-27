@@ -91,16 +91,6 @@ namespace Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] SlideModel {
-            get {
-                object obj = ResourceManager.GetObject("SlideModel", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to just to recreate resource file.
         /// </summary>
         internal static string String1 {
