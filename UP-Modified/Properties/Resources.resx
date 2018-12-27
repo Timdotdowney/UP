@@ -127,6 +127,9 @@
   <data name="NetworkIO" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NetworkIO.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Ookii_Dialogs_Wpf" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Ookii.Dialogs.Wpf.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="SlideModel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SlideModel.pdb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
