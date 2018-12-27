@@ -259,7 +259,10 @@ namespace InstructorClient
 			SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 			SetStyle(ControlStyles.ResizeRedraw, false);
 			InitializeComponent();
-			slideList.SelectedIndex = 0;
+            menuImport.Shortcut = System.Windows.Forms.Shortcut.CtrlI;
+            menuItemClose.Shortcut = System.Windows.Forms.Shortcut.CtrlX;
+            menuItemSync.Shortcut = System.Windows.Forms.Shortcut.CtrlK;
+            slideList.SelectedIndex = 0;
 			setupCustomColors();
 			penAttributes = new CustomPenAttributes();
 			setStatus("Ubiquitous Presenter 3.3.1");
@@ -1502,21 +1505,21 @@ namespace InstructorClient
 		{
 			if (webService != null)
 			{
-				if (webService == null || webService.uploadQueueIsEmpty() || MessageBox.Show("There are pending upload operations that will be lost if you close this lecture. Are you sure you want to continue?", "Pending Uploads", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+				if (!webService.uploadQueueIsEmpty())
 				{
-					int num;
+                    bool saveLecture = false;
 					switch (MessageBox.Show("Would you like to save your current lecture?", "Closing Lecture...", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1))
 					{
 					case DialogResult.Cancel:
-						return false;
+                        return false;
 					case DialogResult.Yes:
-						num = (saveCurrentLecture() ? 1 : 0);
+						saveLecture = saveCurrentLecture();
 						break;
-					default:
-						num = 1;
+					case DialogResult.No:
+						saveLecture = false;
 						break;
 					}
-					if (num != 0)
+					if (!saveLecture)
 					{
 						Disconnect();
 						stopInkThread();
