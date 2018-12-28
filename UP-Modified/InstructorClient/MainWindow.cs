@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Net;
+using System.Resources;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -202,8 +203,6 @@ namespace InstructorClient
 
 		private SplitContainer mainSplitter;
 
-		private SlideList slideList;
-
 		private InkPanel inkPanel;
 
 		private SubmissionPreviewPanel subPreviewPanel;
@@ -227,8 +226,8 @@ namespace InstructorClient
 		private MenuItem menuItem_subThumbSize;
 
 		private MenuItem changeSlidePreview;
-
-		private MenuItem changeSubPreview;
+        private SlideList slideList;
+        private MenuItem changeSubPreview;
 
 		private bool SubsEnabled
 		{
@@ -252,60 +251,64 @@ namespace InstructorClient
 
 		private Slide CurrentSlide => slideList.SelectedSlide;
 
-		public MainWindow(string file_arg)
-		{
-			cmdline_filename = file_arg;
-			SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-			SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-			SetStyle(ControlStyles.ResizeRedraw, false);
-			InitializeComponent();
+        public MainWindow()
+        {
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            SetStyle(ControlStyles.ResizeRedraw, false);
+            InitializeComponent();
             menuImport.Shortcut = System.Windows.Forms.Shortcut.CtrlI;
             menuItemClose.Shortcut = System.Windows.Forms.Shortcut.CtrlX;
             menuItemSync.Shortcut = System.Windows.Forms.Shortcut.CtrlK;
             slideList.SelectedIndex = 0;
-			setupCustomColors();
-			penAttributes = new CustomPenAttributes();
-			setStatus("Ubiquitous Presenter 3.3.1");
-			setSlideStatus("(No Slide Selected)");
-			setUploadQueueStatus("(No Pending Uploads)");
-			base.Closing += MainWindow_Closing;
-			SlideList expr_CB = slideList;
-			expr_CB.SlideChangeDelegate = (UpdateMainSlideDelegate)Delegate.Combine(expr_CB.SlideChangeDelegate, new UpdateMainSlideDelegate(updateMainSlideImage));
-			SlideList expr_F2 = slideList;
-			expr_F2.SlideChangeDelegate = (UpdateMainSlideDelegate)Delegate.Combine(expr_F2.SlideChangeDelegate, new UpdateMainSlideDelegate(updateMinimizeButton));
-			SlideList expr_169 = slideList;
-			expr_169.SlideChangeDelegate = (UpdateMainSlideDelegate)Delegate.Combine(expr_169.SlideChangeDelegate, new UpdateMainSlideDelegate(sendChangeSlide));
-			SlideList expr_168 = slideList;
-			expr_168.SlideChangeDelegate = (UpdateMainSlideDelegate)Delegate.Combine(expr_168.SlideChangeDelegate, new UpdateMainSlideDelegate(updateSlideStatusBar));
-			InkPanel expr_167 = inkPanel;
-			expr_167.inkChangedDelegate = (InkChangedDelegate)Delegate.Combine(expr_167.inkChangedDelegate, new InkChangedDelegate(slideList.InvalidateCurrentThumbnail));
-			minimizeCheck.Click += minimizeCheck_Click;
-			mainSplitter.Panel2.Layout += Panel2_Layout;
-			mainSplitter.Panel1.Invalidated += MainSplitter_Invalidated;
-			inkPanel.BackColor = penColors.getColor(5);
-			setupSecondMonitor();
-			inkRadio.Checked = true;
-			colorRadioBlack.Checked = true;
-			setWindowTitle();
-			default_show_sub_color = showHideSubsButton.BackColor;
-			default_show_sub_text_color = showHideSubsButton.ForeColor;
-			setupToolTips();
-			notifyContextMenu = new ContextMenu();
-			notifyMenuItem = new MenuItem();
-			notifyContextMenu.MenuItems.AddRange(new MenuItem[1]
-			{
-				notifyMenuItem
-			});
-			notifyMenuItem.Index = 0;
-			notifyMenuItem.Text = "Download new version";
-			notifyMenuItem.Click += GoToDownloadUpdate;
-			notifyIcon = new NotifyIcon();
-			notifyIcon.Text = "Ubiquitous Presenter";
-			notifyIcon.Visible = true;
-			notifyIcon.Icon = Resources.PresenterIcon;
-			notifyIcon.ContextMenu = notifyContextMenu;
-			notifyIcon.BalloonTipClicked += GoToDownloadUpdate;
-			toStateIdle();
+            setupCustomColors();
+            penAttributes = new CustomPenAttributes();
+            setStatus("Ubiquitous Presenter 3.3.1");
+            setSlideStatus("(No Slide Selected)");
+            setUploadQueueStatus("(No Pending Uploads)");
+            base.Closing += MainWindow_Closing;
+            SlideList expr_CB = slideList;
+            expr_CB.SlideChangeDelegate = (UpdateMainSlideDelegate)Delegate.Combine(expr_CB.SlideChangeDelegate, new UpdateMainSlideDelegate(updateMainSlideImage));
+            SlideList expr_F2 = slideList;
+            expr_F2.SlideChangeDelegate = (UpdateMainSlideDelegate)Delegate.Combine(expr_F2.SlideChangeDelegate, new UpdateMainSlideDelegate(updateMinimizeButton));
+            SlideList expr_169 = slideList;
+            expr_169.SlideChangeDelegate = (UpdateMainSlideDelegate)Delegate.Combine(expr_169.SlideChangeDelegate, new UpdateMainSlideDelegate(sendChangeSlide));
+            SlideList expr_168 = slideList;
+            expr_168.SlideChangeDelegate = (UpdateMainSlideDelegate)Delegate.Combine(expr_168.SlideChangeDelegate, new UpdateMainSlideDelegate(updateSlideStatusBar));
+            InkPanel expr_167 = inkPanel;
+            expr_167.inkChangedDelegate = (InkChangedDelegate)Delegate.Combine(expr_167.inkChangedDelegate, new InkChangedDelegate(slideList.InvalidateCurrentThumbnail));
+            minimizeCheck.Click += minimizeCheck_Click;
+            mainSplitter.Panel2.Layout += Panel2_Layout;
+            mainSplitter.Panel1.Invalidated += MainSplitter_Invalidated;
+            inkPanel.BackColor = penColors.getColor(5);
+            setupSecondMonitor();
+            inkRadio.Checked = true;
+            colorRadioBlack.Checked = true;
+            setWindowTitle();
+            default_show_sub_color = showHideSubsButton.BackColor;
+            default_show_sub_text_color = showHideSubsButton.ForeColor;
+            setupToolTips();
+            notifyContextMenu = new ContextMenu();
+            notifyMenuItem = new MenuItem();
+            notifyContextMenu.MenuItems.AddRange(new MenuItem[1]
+            {
+                notifyMenuItem
+            });
+            notifyMenuItem.Index = 0;
+            notifyMenuItem.Text = "Download new version";
+            notifyMenuItem.Click += GoToDownloadUpdate;
+            notifyIcon = new NotifyIcon();
+            notifyIcon.Text = "Ubiquitous Presenter";
+            notifyIcon.Visible = true;
+            notifyIcon.Icon = Resources.PresenterIcon;
+            notifyIcon.ContextMenu = notifyContextMenu;
+            notifyIcon.BalloonTipClicked += GoToDownloadUpdate;
+            toStateIdle();
+        }
+
+		public MainWindow(string file_arg): this()
+		{
+			cmdline_filename = file_arg;
 		}
 
 		private void setupCustomColors()
@@ -374,6 +377,7 @@ namespace InstructorClient
 			monitorDetectionThread = new Thread(monitorDetectionThreadMethod);
 		}
 
+
 		private void setupOtherMonitors()
 		{
 			Rectangle desktopBounds = default(Rectangle);
@@ -433,613 +437,805 @@ namespace InstructorClient
 			base.Dispose(disposing);
 		}
 
-		private void InitializeComponent()
-		{
-			components = new System.ComponentModel.Container();
-			System.ComponentModel.ComponentResourceManager componentResourceManager = new System.ComponentModel.ComponentResourceManager(typeof(InstructorClient.MainWindow));
-			inkRadio = new System.Windows.Forms.RadioButton();
-			imList1 = new System.Windows.Forms.ImageList(components);
-			eraseRadio = new System.Windows.Forms.RadioButton();
-			clearButton = new System.Windows.Forms.Button();
-			imList0 = new System.Windows.Forms.ImageList(components);
-			imList2 = new System.Windows.Forms.ImageList(components);
-			imList3 = new System.Windows.Forms.ImageList(components);
-			colorRadioBlack = new System.Windows.Forms.RadioButton();
-			colorRadioRed = new System.Windows.Forms.RadioButton();
-			colorRadioGreen = new System.Windows.Forms.RadioButton();
-			colorRadioBlue = new System.Windows.Forms.RadioButton();
-			colorButtonsPanel = new System.Windows.Forms.Panel();
-			toggleSubmissionsEnabled = new System.Windows.Forms.Button();
-			showHideSubsButton = new System.Windows.Forms.Button();
-			blankSlideButton = new System.Windows.Forms.Button();
-			minimizeCheck = new System.Windows.Forms.CheckBox();
-			instrCurButton = new System.Windows.Forms.Button();
-			inkRadioPanel = new System.Windows.Forms.Panel();
-			thinInkRadio = new System.Windows.Forms.RadioButton();
-			colorRadioPanel = new System.Windows.Forms.Panel();
-			colorRadioYellow = new System.Windows.Forms.RadioButton();
-			rightPrevButton = new System.Windows.Forms.Button();
-			rightNextButton = new System.Windows.Forms.Button();
-			leftNextButton = new System.Windows.Forms.Button();
-			leftPrevButton = new System.Windows.Forms.Button();
-			instrInkCheck = new System.Windows.Forms.CheckBox();
-			statusBar = new System.Windows.Forms.StatusBar();
-			statusBarPanel1 = new System.Windows.Forms.StatusBarPanel();
-			slideStatusBarPanel = new System.Windows.Forms.StatusBarPanel();
-			uploadQueueStatus = new System.Windows.Forms.StatusBarPanel();
-			mainMenu1 = new System.Windows.Forms.MainMenu(components);
-			fileMenu = new System.Windows.Forms.MenuItem();
-			menuConnect = new System.Windows.Forms.MenuItem();
-			menuImport = new System.Windows.Forms.MenuItem();
-			menuItemSync = new System.Windows.Forms.MenuItem();
-			menuDisconnect = new System.Windows.Forms.MenuItem();
-			menuItem3 = new System.Windows.Forms.MenuItem();
-			menuOpenLecture = new System.Windows.Forms.MenuItem();
-			menuItemClose = new System.Windows.Forms.MenuItem();
-			menuSaveLecture = new System.Windows.Forms.MenuItem();
-			menuExportLecture = new System.Windows.Forms.MenuItem();
-			menuItem4 = new System.Windows.Forms.MenuItem();
-			menuQuit = new System.Windows.Forms.MenuItem();
-			menuItem6 = new System.Windows.Forms.MenuItem();
-			menuItem7 = new System.Windows.Forms.MenuItem();
-			menuItem7_1 = new System.Windows.Forms.MenuItem();
-			menuItem8 = new System.Windows.Forms.MenuItem();
-			menuItem8_1 = new System.Windows.Forms.MenuItem();
-			changeSlidePreview = new System.Windows.Forms.MenuItem();
-			changeSubPreview = new System.Windows.Forms.MenuItem();
-			menuItem_subThumbSize = new System.Windows.Forms.MenuItem();
-			menuItem9 = new System.Windows.Forms.MenuItem();
-			menuItem2 = new System.Windows.Forms.MenuItem();
-			menuChangePen = new System.Windows.Forms.MenuItem();
-			menuItem10 = new System.Windows.Forms.MenuItem();
-			menuItem5 = new System.Windows.Forms.MenuItem();
-			menuItemBgColor = new System.Windows.Forms.MenuItem();
-			helpMenu = new System.Windows.Forms.MenuItem();
-			menuItem1 = new System.Windows.Forms.MenuItem();
-			menuItem11 = new System.Windows.Forms.MenuItem();
-			mainSplitter = new System.Windows.Forms.SplitContainer();
-			slideList = new InstructorClient.SlideList();
-			subPreviewPanel = new InstructorClient.SubmissionPreviewPanel();
-			inkPanel = new InstructorClient.InkPanel();
-			colorButtonsPanel.SuspendLayout();
-			inkRadioPanel.SuspendLayout();
-			colorRadioPanel.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)statusBarPanel1).BeginInit();
-			((System.ComponentModel.ISupportInitialize)slideStatusBarPanel).BeginInit();
-			((System.ComponentModel.ISupportInitialize)uploadQueueStatus).BeginInit();
-			mainSplitter.Panel1.SuspendLayout();
-			mainSplitter.Panel2.SuspendLayout();
-			mainSplitter.SuspendLayout();
-			SuspendLayout();
-			inkRadio.Appearance = System.Windows.Forms.Appearance.Button;
-			inkRadio.ImageIndex = 28;
-			inkRadio.ImageList = imList1;
-			inkRadio.Location = new System.Drawing.Point(52, 0);
-			inkRadio.Name = "inkRadio";
-			inkRadio.Size = new System.Drawing.Size(40, 40);
-			inkRadio.TabIndex = 2;
-			inkRadio.CheckedChanged += new System.EventHandler(inkRadio_CheckedChanged);
-			imList1.ImageStream = (System.Windows.Forms.ImageListStreamer)componentResourceManager.GetObject("imList1.ImageStream");
-			imList1.TransparentColor = System.Drawing.Color.Transparent;
-			imList1.Images.SetKeyName(0, "");
-			imList1.Images.SetKeyName(1, "");
-			imList1.Images.SetKeyName(2, "");
-			imList1.Images.SetKeyName(3, "");
-			imList1.Images.SetKeyName(4, "");
-			imList1.Images.SetKeyName(5, "");
-			imList1.Images.SetKeyName(6, "");
-			imList1.Images.SetKeyName(7, "");
-			imList1.Images.SetKeyName(8, "");
-			imList1.Images.SetKeyName(9, "");
-			imList1.Images.SetKeyName(10, "");
-			imList1.Images.SetKeyName(11, "");
-			imList1.Images.SetKeyName(12, "");
-			imList1.Images.SetKeyName(13, "");
-			imList1.Images.SetKeyName(14, "");
-			imList1.Images.SetKeyName(15, "");
-			imList1.Images.SetKeyName(16, "");
-			imList1.Images.SetKeyName(17, "");
-			imList1.Images.SetKeyName(18, "");
-			imList1.Images.SetKeyName(19, "");
-			imList1.Images.SetKeyName(20, "");
-			imList1.Images.SetKeyName(21, "");
-			imList1.Images.SetKeyName(22, "");
-			imList1.Images.SetKeyName(23, "");
-			imList1.Images.SetKeyName(24, "");
-			imList1.Images.SetKeyName(25, "");
-			imList1.Images.SetKeyName(26, "");
-			imList1.Images.SetKeyName(27, "");
-			imList1.Images.SetKeyName(28, "");
-			imList1.Images.SetKeyName(29, "");
-			imList1.Images.SetKeyName(30, "");
-			imList1.Images.SetKeyName(31, "");
-			imList1.Images.SetKeyName(32, "");
-			imList1.Images.SetKeyName(33, "");
-			imList1.Images.SetKeyName(34, "");
-			imList1.Images.SetKeyName(35, "");
-			imList1.Images.SetKeyName(36, "");
-			imList1.Images.SetKeyName(37, "");
-			imList1.Images.SetKeyName(38, "");
-			imList1.Images.SetKeyName(39, "");
-			imList1.Images.SetKeyName(40, "");
-			imList1.Images.SetKeyName(41, "");
-			imList1.Images.SetKeyName(42, "");
-			imList1.Images.SetKeyName(43, "");
-			imList1.Images.SetKeyName(44, "");
-			imList1.Images.SetKeyName(45, "");
-			imList1.Images.SetKeyName(46, "");
-			imList1.Images.SetKeyName(47, "");
-			imList1.Images.SetKeyName(48, "");
-			imList1.Images.SetKeyName(49, "");
-			imList1.Images.SetKeyName(50, "");
-			eraseRadio.Appearance = System.Windows.Forms.Appearance.Button;
-			eraseRadio.ImageIndex = 22;
-			eraseRadio.ImageList = imList1;
-			eraseRadio.Location = new System.Drawing.Point(98, 0);
-			eraseRadio.Name = "eraseRadio";
-			eraseRadio.Size = new System.Drawing.Size(40, 40);
-			eraseRadio.TabIndex = 3;
-			eraseRadio.CheckedChanged += new System.EventHandler(eraseRadio_CheckedChanged);
-			clearButton.ImageIndex = 40;
-			clearButton.ImageList = imList1;
-			clearButton.Location = new System.Drawing.Point(132, 0);
-			clearButton.Name = "clearButton";
-			clearButton.Size = new System.Drawing.Size(40, 40);
-			clearButton.TabIndex = 17;
-			clearButton.Click += new System.EventHandler(clearButton_Click);
-			imList0.ImageStream = (System.Windows.Forms.ImageListStreamer)componentResourceManager.GetObject("imList0.ImageStream");
-			imList0.TransparentColor = System.Drawing.Color.Transparent;
-			imList0.Images.SetKeyName(0, "");
-			imList0.Images.SetKeyName(1, "");
-			imList0.Images.SetKeyName(2, "");
-			imList0.Images.SetKeyName(3, "");
-			imList0.Images.SetKeyName(4, "");
-			imList0.Images.SetKeyName(5, "");
-			imList0.Images.SetKeyName(6, "");
-			imList0.Images.SetKeyName(7, "");
-			imList0.Images.SetKeyName(8, "");
-			imList0.Images.SetKeyName(9, "");
-			imList0.Images.SetKeyName(10, "");
-			imList0.Images.SetKeyName(11, "");
-			imList0.Images.SetKeyName(12, "");
-			imList0.Images.SetKeyName(13, "");
-			imList0.Images.SetKeyName(14, "");
-			imList0.Images.SetKeyName(15, "");
-			imList0.Images.SetKeyName(16, "");
-			imList0.Images.SetKeyName(17, "");
-			imList0.Images.SetKeyName(18, "");
-			imList0.Images.SetKeyName(19, "");
-			imList0.Images.SetKeyName(20, "");
-			imList0.Images.SetKeyName(21, "");
-			imList0.Images.SetKeyName(22, "");
-			imList0.Images.SetKeyName(23, "");
-			imList0.Images.SetKeyName(24, "");
-			imList0.Images.SetKeyName(25, "");
-			imList0.Images.SetKeyName(26, "");
-			imList0.Images.SetKeyName(27, "");
-			imList0.Images.SetKeyName(28, "");
-			imList0.Images.SetKeyName(29, "");
-			imList0.Images.SetKeyName(30, "");
-			imList0.Images.SetKeyName(31, "");
-			imList0.Images.SetKeyName(32, "");
-			imList0.Images.SetKeyName(33, "");
-			imList0.Images.SetKeyName(34, "");
-			imList0.Images.SetKeyName(35, "");
-			imList0.Images.SetKeyName(36, "");
-			imList0.Images.SetKeyName(37, "");
-			imList2.ImageStream = (System.Windows.Forms.ImageListStreamer)componentResourceManager.GetObject("imList2.ImageStream");
-			imList2.TransparentColor = System.Drawing.Color.Transparent;
-			imList2.Images.SetKeyName(0, "");
-			imList2.Images.SetKeyName(1, "");
-			imList2.Images.SetKeyName(2, "");
-			imList2.Images.SetKeyName(3, "");
-			imList2.Images.SetKeyName(4, "");
-			imList2.Images.SetKeyName(5, "");
-			imList2.Images.SetKeyName(6, "");
-			imList2.Images.SetKeyName(7, "");
-			imList2.Images.SetKeyName(8, "");
-			imList2.Images.SetKeyName(9, "");
-			imList2.Images.SetKeyName(10, "");
-			imList2.Images.SetKeyName(11, "");
-			imList2.Images.SetKeyName(12, "");
-			imList2.Images.SetKeyName(13, "");
-			imList2.Images.SetKeyName(14, "");
-			imList2.Images.SetKeyName(15, "");
-			imList2.Images.SetKeyName(16, "");
-			imList2.Images.SetKeyName(17, "");
-			imList2.Images.SetKeyName(18, "");
-			imList2.Images.SetKeyName(19, "");
-			imList2.Images.SetKeyName(20, "");
-			imList2.Images.SetKeyName(21, "");
-			imList2.Images.SetKeyName(22, "");
-			imList2.Images.SetKeyName(23, "");
-			imList2.Images.SetKeyName(24, "");
-			imList2.Images.SetKeyName(25, "");
-			imList2.Images.SetKeyName(26, "");
-			imList3.ImageStream = (System.Windows.Forms.ImageListStreamer)componentResourceManager.GetObject("imList3.ImageStream");
-			imList3.TransparentColor = System.Drawing.Color.Transparent;
-			imList3.Images.SetKeyName(0, "");
-			imList3.Images.SetKeyName(1, "");
-			imList3.Images.SetKeyName(2, "");
-			imList3.Images.SetKeyName(3, "");
-			colorRadioBlack.Appearance = System.Windows.Forms.Appearance.Button;
-			colorRadioBlack.BackColor = System.Drawing.Color.Black;
-			colorRadioBlack.ForeColor = System.Drawing.Color.Black;
-			colorRadioBlack.Location = new System.Drawing.Point(8, 0);
-			colorRadioBlack.Name = "colorRadioBlack";
-			colorRadioBlack.Size = new System.Drawing.Size(40, 40);
-			colorRadioBlack.TabIndex = 18;
-			colorRadioBlack.UseVisualStyleBackColor = false;
-			colorRadioBlack.CheckedChanged += new System.EventHandler(colorRadioBlack_CheckedChanged);
-			colorRadioRed.Appearance = System.Windows.Forms.Appearance.Button;
-			colorRadioRed.BackColor = System.Drawing.Color.Red;
-			colorRadioRed.Location = new System.Drawing.Point(48, 0);
-			colorRadioRed.Name = "colorRadioRed";
-			colorRadioRed.Size = new System.Drawing.Size(40, 40);
-			colorRadioRed.TabIndex = 19;
-			colorRadioRed.UseVisualStyleBackColor = false;
-			colorRadioRed.CheckedChanged += new System.EventHandler(colorRadioRed_CheckedChanged);
-			colorRadioGreen.Appearance = System.Windows.Forms.Appearance.Button;
-			colorRadioGreen.BackColor = System.Drawing.Color.Green;
-			colorRadioGreen.Location = new System.Drawing.Point(88, 0);
-			colorRadioGreen.Name = "colorRadioGreen";
-			colorRadioGreen.Size = new System.Drawing.Size(40, 40);
-			colorRadioGreen.TabIndex = 20;
-			colorRadioGreen.UseVisualStyleBackColor = false;
-			colorRadioGreen.CheckedChanged += new System.EventHandler(colorRadioGreen_CheckedChanged);
-			colorRadioBlue.Appearance = System.Windows.Forms.Appearance.Button;
-			colorRadioBlue.BackColor = System.Drawing.Color.Blue;
-			colorRadioBlue.ImageIndex = 4;
-			colorRadioBlue.Location = new System.Drawing.Point(128, 0);
-			colorRadioBlue.Name = "colorRadioBlue";
-			colorRadioBlue.Size = new System.Drawing.Size(40, 40);
-			colorRadioBlue.TabIndex = 21;
-			colorRadioBlue.UseVisualStyleBackColor = false;
-			colorRadioBlue.CheckedChanged += new System.EventHandler(colorRadioBlue_CheckedChanged);
-			colorButtonsPanel.Controls.Add(toggleSubmissionsEnabled);
-			colorButtonsPanel.Controls.Add(showHideSubsButton);
-			colorButtonsPanel.Controls.Add(blankSlideButton);
-			colorButtonsPanel.Controls.Add(minimizeCheck);
-			colorButtonsPanel.Controls.Add(instrCurButton);
-			colorButtonsPanel.Controls.Add(inkRadioPanel);
-			colorButtonsPanel.Controls.Add(colorRadioPanel);
-			colorButtonsPanel.Controls.Add(rightPrevButton);
-			colorButtonsPanel.Controls.Add(rightNextButton);
-			colorButtonsPanel.Controls.Add(clearButton);
-			colorButtonsPanel.Controls.Add(leftNextButton);
-			colorButtonsPanel.Controls.Add(leftPrevButton);
-			colorButtonsPanel.Controls.Add(instrInkCheck);
-			colorButtonsPanel.Dock = System.Windows.Forms.DockStyle.Top;
-			colorButtonsPanel.Location = new System.Drawing.Point(0, 0);
-			colorButtonsPanel.Name = "colorButtonsPanel";
-			colorButtonsPanel.Size = new System.Drawing.Size(804, 40);
-			colorButtonsPanel.TabIndex = 22;
-			toggleSubmissionsEnabled.Enabled = false;
-			toggleSubmissionsEnabled.Location = new System.Drawing.Point(642, 0);
-			toggleSubmissionsEnabled.Name = "toggleSubmissionsEnabled";
-			toggleSubmissionsEnabled.Size = new System.Drawing.Size(81, 40);
-			toggleSubmissionsEnabled.TabIndex = 36;
-			toggleSubmissionsEnabled.Text = "Enable Submissions";
-			toggleSubmissionsEnabled.UseVisualStyleBackColor = true;
-			toggleSubmissionsEnabled.Click += new System.EventHandler(toggleSubmissionsEnabled_Click);
-			showHideSubsButton.ImageList = imList0;
-			showHideSubsButton.Location = new System.Drawing.Point(729, 0);
-			showHideSubsButton.Name = "showHideSubsButton";
-			showHideSubsButton.Size = new System.Drawing.Size(85, 40);
-			showHideSubsButton.TabIndex = 35;
-			showHideSubsButton.Text = "Show Submissions";
-			showHideSubsButton.Click += new System.EventHandler(showHideSubsButton_Click);
-			blankSlideButton.ImageIndex = 3;
-			blankSlideButton.ImageList = imList0;
-			blankSlideButton.Location = new System.Drawing.Point(584, 0);
-			blankSlideButton.Name = "blankSlideButton";
-			blankSlideButton.Size = new System.Drawing.Size(40, 40);
-			blankSlideButton.TabIndex = 34;
-			blankSlideButton.Click += new System.EventHandler(noteButton_Click);
-			minimizeCheck.AccessibleDescription = "";
-			minimizeCheck.Appearance = System.Windows.Forms.Appearance.Button;
-			minimizeCheck.Location = new System.Drawing.Point(86, 0);
-			minimizeCheck.Name = "minimizeCheck";
-			minimizeCheck.Size = new System.Drawing.Size(41, 40);
-			minimizeCheck.TabIndex = 33;
-			minimizeCheck.Text = "Min";
-			minimizeCheck.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			minimizeCheck.CheckedChanged += new System.EventHandler(minimizeCheck_CheckedChanged);
-			instrCurButton.Location = new System.Drawing.Point(86, 0);
-			instrCurButton.Name = "instrCurButton";
-			instrCurButton.Size = new System.Drawing.Size(39, 40);
-			instrCurButton.TabIndex = 32;
-			instrCurButton.Text = "Cur";
-			instrCurButton.Visible = false;
-			instrCurButton.Click += new System.EventHandler(instrCurButton_Click);
-			inkRadioPanel.Controls.Add(thinInkRadio);
-			inkRadioPanel.Controls.Add(eraseRadio);
-			inkRadioPanel.Controls.Add(inkRadio);
-			inkRadioPanel.Location = new System.Drawing.Point(196, 0);
-			inkRadioPanel.Name = "inkRadioPanel";
-			inkRadioPanel.Size = new System.Drawing.Size(141, 40);
-			inkRadioPanel.TabIndex = 31;
-			thinInkRadio.Appearance = System.Windows.Forms.Appearance.Button;
-			thinInkRadio.ImageIndex = 28;
-			thinInkRadio.ImageList = imList1;
-			thinInkRadio.Location = new System.Drawing.Point(6, 0);
-			thinInkRadio.Name = "thinInkRadio";
-			thinInkRadio.Size = new System.Drawing.Size(40, 40);
-			thinInkRadio.TabIndex = 4;
-			thinInkRadio.CheckedChanged += new System.EventHandler(thinInkRadio_CheckedChanged);
-			colorRadioPanel.Controls.Add(colorRadioGreen);
-			colorRadioPanel.Controls.Add(colorRadioBlack);
-			colorRadioPanel.Controls.Add(colorRadioBlue);
-			colorRadioPanel.Controls.Add(colorRadioYellow);
-			colorRadioPanel.Controls.Add(colorRadioRed);
-			colorRadioPanel.Location = new System.Drawing.Point(352, 0);
-			colorRadioPanel.Name = "colorRadioPanel";
-			colorRadioPanel.Size = new System.Drawing.Size(216, 48);
-			colorRadioPanel.TabIndex = 30;
-			colorRadioYellow.Appearance = System.Windows.Forms.Appearance.Button;
-			colorRadioYellow.BackColor = System.Drawing.Color.Yellow;
-			colorRadioYellow.ImageIndex = 25;
-			colorRadioYellow.Location = new System.Drawing.Point(168, 0);
-			colorRadioYellow.Name = "colorRadioYellow";
-			colorRadioYellow.Size = new System.Drawing.Size(40, 40);
-			colorRadioYellow.TabIndex = 22;
-			colorRadioYellow.UseVisualStyleBackColor = false;
-			colorRadioYellow.CheckedChanged += new System.EventHandler(colorRadioYellow_CheckedChanged);
-			rightPrevButton.Anchor = (System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
-			rightPrevButton.ImageIndex = 2;
-			rightPrevButton.ImageList = imList1;
-			rightPrevButton.Location = new System.Drawing.Point(724, 0);
-			rightPrevButton.Name = "rightPrevButton";
-			rightPrevButton.Size = new System.Drawing.Size(40, 40);
-			rightPrevButton.TabIndex = 26;
-			rightPrevButton.Click += new System.EventHandler(rightPrevButton_Click);
-			rightNextButton.Anchor = (System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
-			rightNextButton.ImageIndex = 5;
-			rightNextButton.ImageList = imList1;
-			rightNextButton.Location = new System.Drawing.Point(764, 0);
-			rightNextButton.Name = "rightNextButton";
-			rightNextButton.Size = new System.Drawing.Size(40, 40);
-			rightNextButton.TabIndex = 27;
-			rightNextButton.Click += new System.EventHandler(rightNextButton_Click);
-			leftNextButton.ImageIndex = 5;
-			leftNextButton.ImageList = imList1;
-			leftNextButton.Location = new System.Drawing.Point(40, 0);
-			leftNextButton.Name = "leftNextButton";
-			leftNextButton.Size = new System.Drawing.Size(40, 40);
-			leftNextButton.TabIndex = 29;
-			leftNextButton.Click += new System.EventHandler(leftNextButton_Click);
-			leftPrevButton.ImageIndex = 2;
-			leftPrevButton.ImageList = imList1;
-			leftPrevButton.Location = new System.Drawing.Point(0, 0);
-			leftPrevButton.Name = "leftPrevButton";
-			leftPrevButton.Size = new System.Drawing.Size(40, 40);
-			leftPrevButton.TabIndex = 28;
-			leftPrevButton.Click += new System.EventHandler(leftPrevButton_Click);
-			instrInkCheck.Checked = true;
-			instrInkCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-			instrInkCheck.Location = new System.Drawing.Point(584, 8);
-			instrInkCheck.Name = "instrInkCheck";
-			instrInkCheck.Size = new System.Drawing.Size(88, 24);
-			instrInkCheck.TabIndex = 25;
-			instrInkCheck.Text = "Instructor Ink";
-			instrInkCheck.Visible = false;
-			instrInkCheck.CheckedChanged += new System.EventHandler(instrInkCheck_CheckedChanged);
-			statusBar.Location = new System.Drawing.Point(0, 476);
-			statusBar.Name = "statusBar";
-			statusBar.Panels.AddRange(new System.Windows.Forms.StatusBarPanel[3]
-			{
-				slideStatusBarPanel,
-				statusBarPanel1,
-				uploadQueueStatus
-			});
-			statusBar.ShowPanels = true;
-			statusBar.Size = new System.Drawing.Size(804, 24);
-			statusBar.TabIndex = 24;
-			statusBarPanel1.Name = "statusBarPanel1";
-			statusBarPanel1.Width = 200;
-			slideStatusBarPanel.Name = "slideStatusBarPanel";
-			slideStatusBarPanel.Width = 200;
-			uploadQueueStatus.Name = "statusBarPanel1";
-			uploadQueueStatus.Width = 200;
-			mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[4]
-			{
-				fileMenu,
-				menuItem6,
-				menuItem2,
-				helpMenu
-			});
-			fileMenu.Index = 0;
-			fileMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[11]
-			{
-				menuConnect,
-				menuImport,
-				menuItemSync,
-				menuDisconnect,
-				menuItem3,
-				menuOpenLecture,
-				menuItemClose,
-				menuSaveLecture,
-				menuExportLecture,
-				menuItem4,
-				menuQuit
-			});
-			fileMenu.Text = "File";
-			menuConnect.Index = 0;
-			menuConnect.Shortcut = System.Windows.Forms.Shortcut.CtrlL;
-			menuConnect.Text = "Download Lecture or Create Whiteboard Lecture";
-			menuConnect.Click += new System.EventHandler(menuConnect_Click);
-			menuImport.Index = 1;
-			menuImport.Text = "Import Lecture...";
-			menuImport.Click += new System.EventHandler(menuImport_Click);
-			menuItemSync.Enabled = false;
-			menuItemSync.Index = 2;
-			menuItemSync.Text = "Sync to Open Lecture...";
-			menuItemSync.Click += new System.EventHandler(menuItemSync_Click);
-			menuDisconnect.Enabled = false;
-			menuDisconnect.Index = 3;
-			menuDisconnect.Shortcut = System.Windows.Forms.Shortcut.CtrlD;
-			menuDisconnect.Text = "Disconnect";
-			menuDisconnect.Click += new System.EventHandler(menuDisconnect_Click);
-			menuItem3.Index = 4;
-			menuItem3.Text = "-";
-			menuOpenLecture.Index = 5;
-			menuOpenLecture.Shortcut = System.Windows.Forms.Shortcut.CtrlO;
-			menuOpenLecture.Text = "Open Lecture...";
-			menuOpenLecture.Click += new System.EventHandler(menuOpenLecture_Click);
-			menuItemClose.Enabled = false;
-			menuItemClose.Index = 6;
-			menuItemClose.Text = "Close Lecture";
-			menuItemClose.Click += new System.EventHandler(menuItemClose_Click);
-			menuSaveLecture.Enabled = false;
-			menuSaveLecture.Index = 7;
-			menuSaveLecture.Shortcut = System.Windows.Forms.Shortcut.CtrlS;
-			menuSaveLecture.Text = "Save Lecture";
-			menuSaveLecture.Click += new System.EventHandler(menuItem2_Click);
-			menuExportLecture.Enabled = false;
-			menuExportLecture.Index = 8;
-			menuExportLecture.Text = "Export Lecture...";
-			menuExportLecture.Click += new System.EventHandler(menuExportLecture_Click);
-			menuItem4.Index = 9;
-			menuItem4.Text = "-";
-			menuQuit.Index = 10;
-			menuQuit.Shortcut = System.Windows.Forms.Shortcut.CtrlQ;
-			menuQuit.Text = "Exit";
-			menuQuit.Click += new System.EventHandler(menuQuit_Click);
-			menuItem6.Index = 1;
-			menuItem6.MenuItems.AddRange(new System.Windows.Forms.MenuItem[8]
-			{
-				menuItem7,
-				menuItem7_1,
-				menuItem8,
-				menuItem8_1,
-				changeSlidePreview,
-				menuItem_subThumbSize,
-				changeSubPreview,
-				menuItem9
-			});
-			menuItem6.Text = "Slides";
-			menuItem7.Index = 0;
-			menuItem7.Shortcut = System.Windows.Forms.Shortcut.AltDownArrow;
-			menuItem7.Text = "Next Slide";
-			menuItem7.Click += new System.EventHandler(menuItem7_Click);
-			menuItem7_1.Visible = false;
-			menuItem7_1.Shortcut = System.Windows.Forms.Shortcut.AltRightArrow;
-			menuItem7_1.Click += new System.EventHandler(menuItem7_Click);
-			menuItem8.Index = 1;
-			menuItem8.Shortcut = System.Windows.Forms.Shortcut.AltUpArrow;
-			menuItem8.Text = "Previous Slide";
-			menuItem8.Click += new System.EventHandler(menuItem8_Click);
-			menuItem8_1.Visible = false;
-			menuItem8_1.Shortcut = System.Windows.Forms.Shortcut.AltLeftArrow;
-			menuItem8_1.Click += new System.EventHandler(menuItem8_Click);
-			changeSlidePreview.Index = 2;
-			changeSlidePreview.Text = "Slide Preview Size...";
-			changeSlidePreview.Click += new System.EventHandler(changeSlidePreview_Click);
-			changeSubPreview.Index = 4;
-			changeSubPreview.Text = "Submission Preview Size...";
-			changeSubPreview.Click += new System.EventHandler(changeSubPreview_Click);
-			menuItem_subThumbSize.Index = 3;
-			menuItem_subThumbSize.Text = "Submission Thumb Size...";
-			menuItem_subThumbSize.Click += new System.EventHandler(menuItem_subThumbSize_Click);
-			menuItem9.Index = 5;
-			menuItem9.Shortcut = System.Windows.Forms.Shortcut.CtrlI;
-			menuItem9.Text = "Current Instructor Slide";
-			menuItem9.Visible = false;
-			menuItem9.Click += new System.EventHandler(menuItem9_Click);
-			menuItem2.Index = 2;
-			menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[4]
-			{
-				menuChangePen,
-				menuItem10,
-				menuItem5,
-				menuItemBgColor
-			});
-			menuItem2.Text = "Ink";
-			menuChangePen.Index = 0;
-			menuChangePen.Text = "Current Pen Color...";
-			menuChangePen.Click += new System.EventHandler(menuChangePen_Click);
-			menuItem10.Index = 1;
-			menuItem10.Text = "Restore Default Pen Color";
-			menuItem10.Click += new System.EventHandler(menuItem10_Click_2);
-			menuItem5.Index = 2;
-			menuItem5.Text = "Current Ink Style...";
-			menuItem5.Click += new System.EventHandler(menuItem5_Click);
-			menuItemBgColor.Index = 3;
-			menuItemBgColor.Text = "Background Color...";
-			menuItemBgColor.Click += new System.EventHandler(menuItem10_Click_1);
-			helpMenu.Index = 3;
-			helpMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[2]
-			{
-				menuItem11,
-				menuItem1
-			});
-			helpMenu.Text = "Help";
-			menuItem11.Index = 0;
-			menuItem11.Text = "Projection FAQ";
-			menuItem11.Click += new System.EventHandler(menuItem11_Click);
-			menuItem1.Index = 1;
-			menuItem1.Text = "About NoteTaker...";
-			menuItem1.Click += new System.EventHandler(menuItem1_Click);
-			mainSplitter.Dock = System.Windows.Forms.DockStyle.Fill;
-			mainSplitter.Location = new System.Drawing.Point(0, 40);
-			mainSplitter.Name = "mainSplitter";
-			mainSplitter.Panel1.Controls.Add(slideList);
-			mainSplitter.Panel2.Controls.Add(subPreviewPanel);
-			mainSplitter.Panel2.Controls.Add(inkPanel);
-			mainSplitter.Size = new System.Drawing.Size(804, 436);
-			mainSplitter.SplitterDistance = 156;
-			mainSplitter.TabIndex = 25;
-			slideList.Anchor = (System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right);
-			slideList.AutoScrollMargin = new System.Drawing.Size(1, 1);
-			slideList.AutoScrollMinSize = new System.Drawing.Size(1, 1);
-			slideList.BackColor = System.Drawing.SystemColors.Control;
-			slideList.Location = new System.Drawing.Point(4, 7);
-			slideList.Margin = new System.Windows.Forms.Padding(2);
-			slideList.Name = "slideList";
-			slideList.PreviousSlideHadSubmissions = false;
-			slideList.SelectedIndex = 0;
-			slideList.Size = new System.Drawing.Size(150, 424);
-			slideList.SlideChangeDelegate = null;
-			slideList.TabIndex = 0;
-			slideList.Paint += new System.Windows.Forms.PaintEventHandler(slideList_Paint);
-			subPreviewPanel.Anchor = (System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right);
-			subPreviewPanel.AutoScroll = true;
-			subPreviewPanel.Location = new System.Drawing.Point(0, 0);
-			subPreviewPanel.Name = "subPreviewPanel";
-			subPreviewPanel.Size = new System.Drawing.Size(515, 640);
-			subPreviewPanel.TabIndex = 0;
-			subPreviewPanel.Visible = false;
-			inkPanel.Color = System.Drawing.Color.Black;
-			inkPanel.InkEditingMode = Microsoft.Ink.InkOverlayEditingMode.Ink;
-			inkPanel.InkEnabled = false;
-			inkPanel.Location = new System.Drawing.Point(0, 0);
-			inkPanel.Name = "inkPanel";
-			inkPanel.Size = new System.Drawing.Size(200, 100);
-			inkPanel.Slide = null;
-			inkPanel.TabIndex = 1;
-			AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			base.ClientSize = new System.Drawing.Size(804, 500);
-			base.Controls.Add(mainSplitter);
-			base.Controls.Add(statusBar);
-			base.Controls.Add(colorButtonsPanel);
-			base.Menu = mainMenu1;
-			MinimumSize = new System.Drawing.Size(400, 300);
-			base.Name = "MainWindow";
-			Text = "NoteTaker";
-			base.Shown += new System.EventHandler(MainWindow_Load);
-			colorButtonsPanel.ResumeLayout(false);
-			inkRadioPanel.ResumeLayout(false);
-			colorRadioPanel.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)statusBarPanel1).EndInit();
-			((System.ComponentModel.ISupportInitialize)slideStatusBarPanel).EndInit();
-			((System.ComponentModel.ISupportInitialize)uploadQueueStatus).EndInit();
-			mainSplitter.Panel1.ResumeLayout(false);
-			mainSplitter.Panel2.ResumeLayout(false);
-			mainSplitter.ResumeLayout(false);
-			ResumeLayout(false);
-		}
+        System.ComponentModel.ComponentResourceManager componentResourceManager = 
+            new System.ComponentModel.ComponentResourceManager(typeof(InstructorClient.MainWindow));
 
-		private void changeSubPreview_Click(object sender, EventArgs e)
+
+        private void InitializeComponent()
+        {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
+            this.inkRadio = new System.Windows.Forms.RadioButton();
+            this.imList1 = new System.Windows.Forms.ImageList(this.components);
+            this.eraseRadio = new System.Windows.Forms.RadioButton();
+            this.clearButton = new System.Windows.Forms.Button();
+            this.imList0 = new System.Windows.Forms.ImageList(this.components);
+            this.imList2 = new System.Windows.Forms.ImageList(this.components);
+            this.imList3 = new System.Windows.Forms.ImageList(this.components);
+            this.colorRadioBlack = new System.Windows.Forms.RadioButton();
+            this.colorRadioRed = new System.Windows.Forms.RadioButton();
+            this.colorRadioGreen = new System.Windows.Forms.RadioButton();
+            this.colorRadioBlue = new System.Windows.Forms.RadioButton();
+            this.colorButtonsPanel = new System.Windows.Forms.Panel();
+            this.toggleSubmissionsEnabled = new System.Windows.Forms.Button();
+            this.showHideSubsButton = new System.Windows.Forms.Button();
+            this.blankSlideButton = new System.Windows.Forms.Button();
+            this.minimizeCheck = new System.Windows.Forms.CheckBox();
+            this.instrCurButton = new System.Windows.Forms.Button();
+            this.inkRadioPanel = new System.Windows.Forms.Panel();
+            this.thinInkRadio = new System.Windows.Forms.RadioButton();
+            this.colorRadioPanel = new System.Windows.Forms.Panel();
+            this.colorRadioYellow = new System.Windows.Forms.RadioButton();
+            this.rightPrevButton = new System.Windows.Forms.Button();
+            this.rightNextButton = new System.Windows.Forms.Button();
+            this.leftNextButton = new System.Windows.Forms.Button();
+            this.leftPrevButton = new System.Windows.Forms.Button();
+            this.instrInkCheck = new System.Windows.Forms.CheckBox();
+            this.statusBar = new System.Windows.Forms.StatusBar();
+            this.slideStatusBarPanel = new System.Windows.Forms.StatusBarPanel();
+            this.statusBarPanel1 = new System.Windows.Forms.StatusBarPanel();
+            this.uploadQueueStatus = new System.Windows.Forms.StatusBarPanel();
+            this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
+            this.fileMenu = new System.Windows.Forms.MenuItem();
+            this.menuConnect = new System.Windows.Forms.MenuItem();
+            this.menuImport = new System.Windows.Forms.MenuItem();
+            this.menuItemSync = new System.Windows.Forms.MenuItem();
+            this.menuDisconnect = new System.Windows.Forms.MenuItem();
+            this.menuItem3 = new System.Windows.Forms.MenuItem();
+            this.menuOpenLecture = new System.Windows.Forms.MenuItem();
+            this.menuItemClose = new System.Windows.Forms.MenuItem();
+            this.menuSaveLecture = new System.Windows.Forms.MenuItem();
+            this.menuExportLecture = new System.Windows.Forms.MenuItem();
+            this.menuItem4 = new System.Windows.Forms.MenuItem();
+            this.menuQuit = new System.Windows.Forms.MenuItem();
+            this.menuItem6 = new System.Windows.Forms.MenuItem();
+            this.menuItem7 = new System.Windows.Forms.MenuItem();
+            this.menuItem7_1 = new System.Windows.Forms.MenuItem();
+            this.menuItem8 = new System.Windows.Forms.MenuItem();
+            this.menuItem8_1 = new System.Windows.Forms.MenuItem();
+            this.changeSlidePreview = new System.Windows.Forms.MenuItem();
+            this.menuItem_subThumbSize = new System.Windows.Forms.MenuItem();
+            this.changeSubPreview = new System.Windows.Forms.MenuItem();
+            this.menuItem9 = new System.Windows.Forms.MenuItem();
+            this.menuItem2 = new System.Windows.Forms.MenuItem();
+            this.menuChangePen = new System.Windows.Forms.MenuItem();
+            this.menuItem10 = new System.Windows.Forms.MenuItem();
+            this.menuItem5 = new System.Windows.Forms.MenuItem();
+            this.menuItemBgColor = new System.Windows.Forms.MenuItem();
+            this.helpMenu = new System.Windows.Forms.MenuItem();
+            this.menuItem11 = new System.Windows.Forms.MenuItem();
+            this.menuItem1 = new System.Windows.Forms.MenuItem();
+            this.mainSplitter = new System.Windows.Forms.SplitContainer();
+            this.slideList = new InstructorClient.SlideList();
+            this.subPreviewPanel = new InstructorClient.SubmissionPreviewPanel();
+            this.inkPanel = new InstructorClient.InkPanel();
+            this.colorButtonsPanel.SuspendLayout();
+            this.inkRadioPanel.SuspendLayout();
+            this.colorRadioPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.slideStatusBarPanel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.uploadQueueStatus)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mainSplitter)).BeginInit();
+            this.mainSplitter.Panel1.SuspendLayout();
+            this.mainSplitter.Panel2.SuspendLayout();
+            this.mainSplitter.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // inkRadio
+            // 
+            this.inkRadio.Appearance = System.Windows.Forms.Appearance.Button;
+            this.inkRadio.ImageList = this.imList1;
+            this.inkRadio.Location = new System.Drawing.Point(52, 0);
+            this.inkRadio.Name = "inkRadio";
+            this.inkRadio.Size = new System.Drawing.Size(40, 40);
+            this.inkRadio.TabIndex = 2;
+            this.inkRadio.CheckedChanged += new System.EventHandler(this.inkRadio_CheckedChanged);
+            // 
+            // imList1
+            // 
+            this.imList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imList1.ImageStream")));
+            this.imList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imList1.Images.SetKeyName(0, "imList1-0.png");
+            this.imList1.Images.SetKeyName(1, "imList1-1.png");
+            this.imList1.Images.SetKeyName(2, "imList1-2.png");
+            this.imList1.Images.SetKeyName(3, "imList1-3.png");
+            this.imList1.Images.SetKeyName(4, "imList1-4.png");
+            this.imList1.Images.SetKeyName(5, "imList1-5.png");
+            this.imList1.Images.SetKeyName(6, "imList1-6.png");
+            this.imList1.Images.SetKeyName(7, "imList1-7.png");
+            this.imList1.Images.SetKeyName(8, "imList1-8.png");
+            this.imList1.Images.SetKeyName(9, "imList1-9.png");
+            this.imList1.Images.SetKeyName(10, "imList1-10.png");
+            this.imList1.Images.SetKeyName(11, "imList1-11.png");
+            this.imList1.Images.SetKeyName(12, "imList1-12.png");
+            this.imList1.Images.SetKeyName(13, "imList1-13.png");
+            this.imList1.Images.SetKeyName(14, "imList1-14.png");
+            this.imList1.Images.SetKeyName(15, "imList1-15.png");
+            this.imList1.Images.SetKeyName(16, "imList1-16.png");
+            this.imList1.Images.SetKeyName(17, "imList1-17.png");
+            this.imList1.Images.SetKeyName(18, "imList1-18.png");
+            this.imList1.Images.SetKeyName(19, "imList1-19.png");
+            this.imList1.Images.SetKeyName(20, "imList1-20.png");
+            this.imList1.Images.SetKeyName(21, "imList1-21.png");
+            this.imList1.Images.SetKeyName(22, "imList1-22.png");
+            this.imList1.Images.SetKeyName(23, "imList1-23.png");
+            this.imList1.Images.SetKeyName(24, "imList1-24.png");
+            this.imList1.Images.SetKeyName(25, "imList1-25.png");
+            this.imList1.Images.SetKeyName(26, "imList1-26.png");
+            this.imList1.Images.SetKeyName(27, "imList1-27.png");
+            this.imList1.Images.SetKeyName(28, "imList1-28.png");
+            this.imList1.Images.SetKeyName(29, "imList1-29.png");
+            this.imList1.Images.SetKeyName(30, "imList1-30.png");
+            this.imList1.Images.SetKeyName(31, "imList1-31.png");
+            this.imList1.Images.SetKeyName(32, "imList1-32.png");
+            this.imList1.Images.SetKeyName(33, "imList1-33.png");
+            this.imList1.Images.SetKeyName(34, "imList1-34.png");
+            this.imList1.Images.SetKeyName(35, "imList1-35.png");
+            this.imList1.Images.SetKeyName(36, "imList1-36.png");
+            this.imList1.Images.SetKeyName(37, "imList1-37.png");
+            this.imList1.Images.SetKeyName(38, "imList1-38.png");
+            this.imList1.Images.SetKeyName(39, "imList1-39.png");
+            this.imList1.Images.SetKeyName(40, "imList1-40.png");
+            this.imList1.Images.SetKeyName(41, "imList1-41.png");
+            this.imList1.Images.SetKeyName(42, "imList1-42.png");
+            this.imList1.Images.SetKeyName(43, "imList1-43.png");
+            this.imList1.Images.SetKeyName(44, "imList1-44.png");
+            this.imList1.Images.SetKeyName(45, "imList1-45.png");
+            this.imList1.Images.SetKeyName(46, "imList1-46.png");
+            this.imList1.Images.SetKeyName(47, "imList1-47.png");
+            this.imList1.Images.SetKeyName(48, "imList1-48.png");
+            this.imList1.Images.SetKeyName(49, "imList1-49.png");
+            this.imList1.Images.SetKeyName(50, "imList1-50.png");
+            // 
+            // eraseRadio
+            // 
+            this.eraseRadio.Appearance = System.Windows.Forms.Appearance.Button;
+            this.eraseRadio.ImageList = this.imList1;
+            this.eraseRadio.Location = new System.Drawing.Point(98, 0);
+            this.eraseRadio.Name = "eraseRadio";
+            this.eraseRadio.Size = new System.Drawing.Size(40, 40);
+            this.eraseRadio.TabIndex = 3;
+            this.eraseRadio.CheckedChanged += new System.EventHandler(this.eraseRadio_CheckedChanged);
+            // 
+            // clearButton
+            // 
+            this.clearButton.ImageList = this.imList1;
+            this.clearButton.Location = new System.Drawing.Point(132, 0);
+            this.clearButton.Name = "clearButton";
+            this.clearButton.Size = new System.Drawing.Size(40, 40);
+            this.clearButton.TabIndex = 17;
+            this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
+            // 
+            // imList0
+            // 
+            this.imList0.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imList0.ImageStream")));
+            this.imList0.TransparentColor = System.Drawing.Color.Transparent;
+            this.imList0.Images.SetKeyName(0, "imList0-0.png");
+            this.imList0.Images.SetKeyName(1, "imList0-1.png");
+            this.imList0.Images.SetKeyName(2, "imList0-2.png");
+            this.imList0.Images.SetKeyName(3, "imList0-3.png");
+            this.imList0.Images.SetKeyName(4, "imList0-4.png");
+            this.imList0.Images.SetKeyName(5, "imList0-5.png");
+            this.imList0.Images.SetKeyName(6, "imList0-6.png");
+            this.imList0.Images.SetKeyName(7, "imList0-7.png");
+            this.imList0.Images.SetKeyName(8, "imList0-8.png");
+            this.imList0.Images.SetKeyName(9, "imList0-9.png");
+            this.imList0.Images.SetKeyName(10, "imList0-10.png");
+            this.imList0.Images.SetKeyName(11, "imList0-11.png");
+            this.imList0.Images.SetKeyName(12, "imList0-12.png");
+            this.imList0.Images.SetKeyName(13, "imList0-13.png");
+            this.imList0.Images.SetKeyName(14, "imList0-14.png");
+            this.imList0.Images.SetKeyName(15, "imList0-15.png");
+            this.imList0.Images.SetKeyName(16, "imList0-16.png");
+            this.imList0.Images.SetKeyName(17, "imList0-17.png");
+            this.imList0.Images.SetKeyName(18, "imList0-18.png");
+            this.imList0.Images.SetKeyName(19, "imList0-19.png");
+            this.imList0.Images.SetKeyName(20, "imList0-20.png");
+            this.imList0.Images.SetKeyName(21, "imList0-21.png");
+            this.imList0.Images.SetKeyName(22, "imList0-22.png");
+            this.imList0.Images.SetKeyName(23, "imList0-23.png");
+            this.imList0.Images.SetKeyName(24, "imList0-24.png");
+            this.imList0.Images.SetKeyName(25, "imList0-25.png");
+            this.imList0.Images.SetKeyName(26, "imList0-26.png");
+            this.imList0.Images.SetKeyName(27, "imList0-27.png");
+            this.imList0.Images.SetKeyName(28, "imList0-28.png");
+            this.imList0.Images.SetKeyName(29, "imList0-29.png");
+            this.imList0.Images.SetKeyName(30, "imList0-30.png");
+            this.imList0.Images.SetKeyName(31, "imList0-31.png");
+            this.imList0.Images.SetKeyName(32, "imList0-32.png");
+            this.imList0.Images.SetKeyName(33, "imList0-33.png");
+            this.imList0.Images.SetKeyName(34, "imList0-34.png");
+            this.imList0.Images.SetKeyName(35, "imList0-35.png");
+            this.imList0.Images.SetKeyName(36, "imList0-36.png");
+            this.imList0.Images.SetKeyName(37, "imList0-37.png");
+            // 
+            // imList2
+            // 
+            this.imList2.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imList2.ImageStream")));
+            this.imList2.TransparentColor = System.Drawing.Color.Transparent;
+            this.imList2.Images.SetKeyName(0, "imList2-0.png");
+            this.imList2.Images.SetKeyName(1, "imList2-1.png");
+            this.imList2.Images.SetKeyName(2, "imList2-2.png");
+            this.imList2.Images.SetKeyName(3, "imList2-3.png");
+            this.imList2.Images.SetKeyName(4, "imList2-4.png");
+            this.imList2.Images.SetKeyName(5, "imList2-5.png");
+            this.imList2.Images.SetKeyName(6, "imList2-6.png");
+            this.imList2.Images.SetKeyName(7, "imList2-7.png");
+            this.imList2.Images.SetKeyName(8, "imList2-8.png");
+            this.imList2.Images.SetKeyName(9, "imList2-9.png");
+            this.imList2.Images.SetKeyName(10, "imList2-10.png");
+            this.imList2.Images.SetKeyName(11, "imList2-11.png");
+            this.imList2.Images.SetKeyName(12, "imList2-12.png");
+            this.imList2.Images.SetKeyName(13, "imList2-13.png");
+            this.imList2.Images.SetKeyName(14, "imList2-14.png");
+            this.imList2.Images.SetKeyName(15, "imList2-15.png");
+            this.imList2.Images.SetKeyName(16, "imList2-16.png");
+            this.imList2.Images.SetKeyName(17, "imList2-17.png");
+            this.imList2.Images.SetKeyName(18, "imList2-18.png");
+            this.imList2.Images.SetKeyName(19, "imList2-19.png");
+            this.imList2.Images.SetKeyName(20, "imList2-20.png");
+            this.imList2.Images.SetKeyName(21, "imList2-21.png");
+            this.imList2.Images.SetKeyName(22, "imList2-22.png");
+            this.imList2.Images.SetKeyName(23, "imList2-23.png");
+            this.imList2.Images.SetKeyName(24, "imList2-24.png");
+            this.imList2.Images.SetKeyName(25, "imList2-25.png");
+            this.imList2.Images.SetKeyName(26, "imList2-26.png");
+            // 
+            // imList3
+            // 
+            this.imList3.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imList3.ImageStream")));
+            this.imList3.TransparentColor = System.Drawing.Color.Transparent;
+            this.imList3.Images.SetKeyName(0, "imList3-0.png");
+            this.imList3.Images.SetKeyName(1, "imList3-1.png");
+            this.imList3.Images.SetKeyName(2, "imList3-2.png");
+            this.imList3.Images.SetKeyName(3, "imList3-3.png");
+            // 
+            // colorRadioBlack
+            // 
+            this.colorRadioBlack.Appearance = System.Windows.Forms.Appearance.Button;
+            this.colorRadioBlack.BackColor = System.Drawing.Color.Black;
+            this.colorRadioBlack.ForeColor = System.Drawing.Color.Black;
+            this.colorRadioBlack.Location = new System.Drawing.Point(8, 0);
+            this.colorRadioBlack.Name = "colorRadioBlack";
+            this.colorRadioBlack.Size = new System.Drawing.Size(40, 40);
+            this.colorRadioBlack.TabIndex = 18;
+            this.colorRadioBlack.UseVisualStyleBackColor = false;
+            this.colorRadioBlack.CheckedChanged += new System.EventHandler(this.colorRadioBlack_CheckedChanged);
+            // 
+            // colorRadioRed
+            // 
+            this.colorRadioRed.Appearance = System.Windows.Forms.Appearance.Button;
+            this.colorRadioRed.BackColor = System.Drawing.Color.Red;
+            this.colorRadioRed.Location = new System.Drawing.Point(48, 0);
+            this.colorRadioRed.Name = "colorRadioRed";
+            this.colorRadioRed.Size = new System.Drawing.Size(40, 40);
+            this.colorRadioRed.TabIndex = 19;
+            this.colorRadioRed.UseVisualStyleBackColor = false;
+            this.colorRadioRed.CheckedChanged += new System.EventHandler(this.colorRadioRed_CheckedChanged);
+            // 
+            // colorRadioGreen
+            // 
+            this.colorRadioGreen.Appearance = System.Windows.Forms.Appearance.Button;
+            this.colorRadioGreen.BackColor = System.Drawing.Color.Green;
+            this.colorRadioGreen.Location = new System.Drawing.Point(88, 0);
+            this.colorRadioGreen.Name = "colorRadioGreen";
+            this.colorRadioGreen.Size = new System.Drawing.Size(40, 40);
+            this.colorRadioGreen.TabIndex = 20;
+            this.colorRadioGreen.UseVisualStyleBackColor = false;
+            this.colorRadioGreen.CheckedChanged += new System.EventHandler(this.colorRadioGreen_CheckedChanged);
+            // 
+            // colorRadioBlue
+            // 
+            this.colorRadioBlue.Appearance = System.Windows.Forms.Appearance.Button;
+            this.colorRadioBlue.BackColor = System.Drawing.Color.Blue;
+            this.colorRadioBlue.ImageIndex = 4;
+            this.colorRadioBlue.Location = new System.Drawing.Point(128, 0);
+            this.colorRadioBlue.Name = "colorRadioBlue";
+            this.colorRadioBlue.Size = new System.Drawing.Size(40, 40);
+            this.colorRadioBlue.TabIndex = 21;
+            this.colorRadioBlue.UseVisualStyleBackColor = false;
+            this.colorRadioBlue.CheckedChanged += new System.EventHandler(this.colorRadioBlue_CheckedChanged);
+            // 
+            // colorButtonsPanel
+            // 
+            this.colorButtonsPanel.Controls.Add(this.toggleSubmissionsEnabled);
+            this.colorButtonsPanel.Controls.Add(this.showHideSubsButton);
+            this.colorButtonsPanel.Controls.Add(this.blankSlideButton);
+            this.colorButtonsPanel.Controls.Add(this.minimizeCheck);
+            this.colorButtonsPanel.Controls.Add(this.instrCurButton);
+            this.colorButtonsPanel.Controls.Add(this.inkRadioPanel);
+            this.colorButtonsPanel.Controls.Add(this.colorRadioPanel);
+            this.colorButtonsPanel.Controls.Add(this.rightPrevButton);
+            this.colorButtonsPanel.Controls.Add(this.rightNextButton);
+            this.colorButtonsPanel.Controls.Add(this.clearButton);
+            this.colorButtonsPanel.Controls.Add(this.leftNextButton);
+            this.colorButtonsPanel.Controls.Add(this.leftPrevButton);
+            this.colorButtonsPanel.Controls.Add(this.instrInkCheck);
+            this.colorButtonsPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.colorButtonsPanel.Location = new System.Drawing.Point(0, 0);
+            this.colorButtonsPanel.Name = "colorButtonsPanel";
+            this.colorButtonsPanel.Size = new System.Drawing.Size(804, 40);
+            this.colorButtonsPanel.TabIndex = 22;
+            // 
+            // toggleSubmissionsEnabled
+            // 
+            this.toggleSubmissionsEnabled.Enabled = false;
+            this.toggleSubmissionsEnabled.Location = new System.Drawing.Point(642, 0);
+            this.toggleSubmissionsEnabled.Name = "toggleSubmissionsEnabled";
+            this.toggleSubmissionsEnabled.Size = new System.Drawing.Size(81, 40);
+            this.toggleSubmissionsEnabled.TabIndex = 36;
+            this.toggleSubmissionsEnabled.Text = "Enable Submissions";
+            this.toggleSubmissionsEnabled.UseVisualStyleBackColor = true;
+            this.toggleSubmissionsEnabled.Click += new System.EventHandler(this.toggleSubmissionsEnabled_Click);
+            // 
+            // showHideSubsButton
+            // 
+            this.showHideSubsButton.ImageList = this.imList0;
+            this.showHideSubsButton.Location = new System.Drawing.Point(729, 0);
+            this.showHideSubsButton.Name = "showHideSubsButton";
+            this.showHideSubsButton.Size = new System.Drawing.Size(85, 40);
+            this.showHideSubsButton.TabIndex = 35;
+            this.showHideSubsButton.Text = "Show Submissions";
+            this.showHideSubsButton.Click += new System.EventHandler(this.showHideSubsButton_Click);
+            // 
+            // blankSlideButton
+            // 
+            this.blankSlideButton.ImageList = this.imList0;
+            this.blankSlideButton.Location = new System.Drawing.Point(584, 0);
+            this.blankSlideButton.Name = "blankSlideButton";
+            this.blankSlideButton.Size = new System.Drawing.Size(40, 40);
+            this.blankSlideButton.TabIndex = 34;
+            this.blankSlideButton.Click += new System.EventHandler(this.noteButton_Click);
+            // 
+            // minimizeCheck
+            // 
+            this.minimizeCheck.AccessibleDescription = "";
+            this.minimizeCheck.Appearance = System.Windows.Forms.Appearance.Button;
+            this.minimizeCheck.Location = new System.Drawing.Point(86, 0);
+            this.minimizeCheck.Name = "minimizeCheck";
+            this.minimizeCheck.Size = new System.Drawing.Size(41, 40);
+            this.minimizeCheck.TabIndex = 33;
+            this.minimizeCheck.Text = "Min";
+            this.minimizeCheck.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.minimizeCheck.CheckedChanged += new System.EventHandler(this.minimizeCheck_CheckedChanged);
+            // 
+            // instrCurButton
+            // 
+            this.instrCurButton.Location = new System.Drawing.Point(86, 0);
+            this.instrCurButton.Name = "instrCurButton";
+            this.instrCurButton.Size = new System.Drawing.Size(39, 40);
+            this.instrCurButton.TabIndex = 32;
+            this.instrCurButton.Text = "Cur";
+            this.instrCurButton.Visible = false;
+            this.instrCurButton.Click += new System.EventHandler(this.instrCurButton_Click);
+            // 
+            // inkRadioPanel
+            // 
+            this.inkRadioPanel.Controls.Add(this.thinInkRadio);
+            this.inkRadioPanel.Controls.Add(this.eraseRadio);
+            this.inkRadioPanel.Controls.Add(this.inkRadio);
+            this.inkRadioPanel.Location = new System.Drawing.Point(196, 0);
+            this.inkRadioPanel.Name = "inkRadioPanel";
+            this.inkRadioPanel.Size = new System.Drawing.Size(141, 40);
+            this.inkRadioPanel.TabIndex = 31;
+            // 
+            // thinInkRadio
+            // 
+            this.thinInkRadio.Appearance = System.Windows.Forms.Appearance.Button;
+            this.thinInkRadio.ImageList = this.imList1;
+            this.thinInkRadio.Location = new System.Drawing.Point(6, 0);
+            this.thinInkRadio.Name = "thinInkRadio";
+            this.thinInkRadio.Size = new System.Drawing.Size(40, 40);
+            this.thinInkRadio.TabIndex = 4;
+            this.thinInkRadio.CheckedChanged += new System.EventHandler(this.thinInkRadio_CheckedChanged);
+            // 
+            // colorRadioPanel
+            // 
+            this.colorRadioPanel.Controls.Add(this.colorRadioGreen);
+            this.colorRadioPanel.Controls.Add(this.colorRadioBlack);
+            this.colorRadioPanel.Controls.Add(this.colorRadioBlue);
+            this.colorRadioPanel.Controls.Add(this.colorRadioYellow);
+            this.colorRadioPanel.Controls.Add(this.colorRadioRed);
+            this.colorRadioPanel.Location = new System.Drawing.Point(352, 0);
+            this.colorRadioPanel.Name = "colorRadioPanel";
+            this.colorRadioPanel.Size = new System.Drawing.Size(216, 48);
+            this.colorRadioPanel.TabIndex = 30;
+            // 
+            // colorRadioYellow
+            // 
+            this.colorRadioYellow.Appearance = System.Windows.Forms.Appearance.Button;
+            this.colorRadioYellow.BackColor = System.Drawing.Color.Yellow;
+            this.colorRadioYellow.ImageIndex = 25;
+            this.colorRadioYellow.Location = new System.Drawing.Point(168, 0);
+            this.colorRadioYellow.Name = "colorRadioYellow";
+            this.colorRadioYellow.Size = new System.Drawing.Size(40, 40);
+            this.colorRadioYellow.TabIndex = 22;
+            this.colorRadioYellow.UseVisualStyleBackColor = false;
+            this.colorRadioYellow.CheckedChanged += new System.EventHandler(this.colorRadioYellow_CheckedChanged);
+            // 
+            // rightPrevButton
+            // 
+            this.rightPrevButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.rightPrevButton.ImageList = this.imList1;
+            this.rightPrevButton.Location = new System.Drawing.Point(724, 0);
+            this.rightPrevButton.Name = "rightPrevButton";
+            this.rightPrevButton.Size = new System.Drawing.Size(40, 40);
+            this.rightPrevButton.TabIndex = 26;
+            this.rightPrevButton.Click += new System.EventHandler(this.rightPrevButton_Click);
+            // 
+            // rightNextButton
+            // 
+            this.rightNextButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.rightNextButton.ImageList = this.imList1;
+            this.rightNextButton.Location = new System.Drawing.Point(764, 0);
+            this.rightNextButton.Name = "rightNextButton";
+            this.rightNextButton.Size = new System.Drawing.Size(40, 40);
+            this.rightNextButton.TabIndex = 27;
+            this.rightNextButton.Click += new System.EventHandler(this.rightNextButton_Click);
+            // 
+            // leftNextButton
+            // 
+            this.leftNextButton.ImageList = this.imList1;
+            this.leftNextButton.Location = new System.Drawing.Point(40, 0);
+            this.leftNextButton.Name = "leftNextButton";
+            this.leftNextButton.Size = new System.Drawing.Size(40, 40);
+            this.leftNextButton.TabIndex = 29;
+            this.leftNextButton.Click += new System.EventHandler(this.leftNextButton_Click);
+            // 
+            // leftPrevButton
+            // 
+            this.leftPrevButton.ImageList = this.imList1;
+            this.leftPrevButton.Location = new System.Drawing.Point(0, 0);
+            this.leftPrevButton.Name = "leftPrevButton";
+            this.leftPrevButton.Size = new System.Drawing.Size(40, 40);
+            this.leftPrevButton.TabIndex = 28;
+            this.leftPrevButton.Click += new System.EventHandler(this.leftPrevButton_Click);
+            // 
+            // instrInkCheck
+            // 
+            this.instrInkCheck.Checked = true;
+            this.instrInkCheck.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.instrInkCheck.Location = new System.Drawing.Point(584, 8);
+            this.instrInkCheck.Name = "instrInkCheck";
+            this.instrInkCheck.Size = new System.Drawing.Size(88, 24);
+            this.instrInkCheck.TabIndex = 25;
+            this.instrInkCheck.Text = "Instructor Ink";
+            this.instrInkCheck.Visible = false;
+            this.instrInkCheck.CheckedChanged += new System.EventHandler(this.instrInkCheck_CheckedChanged);
+            // 
+            // statusBar
+            // 
+            this.statusBar.Location = new System.Drawing.Point(0, 455);
+            this.statusBar.Name = "statusBar";
+            this.statusBar.Panels.AddRange(new System.Windows.Forms.StatusBarPanel[] {
+            this.slideStatusBarPanel,
+            this.statusBarPanel1,
+            this.uploadQueueStatus});
+            this.statusBar.ShowPanels = true;
+            this.statusBar.Size = new System.Drawing.Size(804, 24);
+            this.statusBar.TabIndex = 24;
+            // 
+            // slideStatusBarPanel
+            // 
+            this.slideStatusBarPanel.Name = "slideStatusBarPanel";
+            this.slideStatusBarPanel.Width = 200;
+            // 
+            // statusBarPanel1
+            // 
+            this.statusBarPanel1.Name = "statusBarPanel1";
+            this.statusBarPanel1.Width = 200;
+            // 
+            // uploadQueueStatus
+            // 
+            this.uploadQueueStatus.Name = "uploadQueueStatus";
+            this.uploadQueueStatus.Width = 200;
+            // 
+            // mainMenu1
+            // 
+            this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.fileMenu,
+            this.menuItem6,
+            this.menuItem2,
+            this.helpMenu});
+            // 
+            // fileMenu
+            // 
+            this.fileMenu.Index = 0;
+            this.fileMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuConnect,
+            this.menuImport,
+            this.menuItemSync,
+            this.menuDisconnect,
+            this.menuItem3,
+            this.menuOpenLecture,
+            this.menuItemClose,
+            this.menuSaveLecture,
+            this.menuExportLecture,
+            this.menuItem4,
+            this.menuQuit});
+            this.fileMenu.Text = "File";
+            // 
+            // menuConnect
+            // 
+            this.menuConnect.Index = 0;
+            this.menuConnect.Shortcut = System.Windows.Forms.Shortcut.CtrlL;
+            this.menuConnect.Text = "Download Lecture or Create Whiteboard Lecture";
+            this.menuConnect.Click += new System.EventHandler(this.menuConnect_Click);
+            // 
+            // menuImport
+            // 
+            this.menuImport.Index = 1;
+            this.menuImport.Text = "Import Lecture...";
+            this.menuImport.Click += new System.EventHandler(this.menuImport_Click);
+            // 
+            // menuItemSync
+            // 
+            this.menuItemSync.Enabled = false;
+            this.menuItemSync.Index = 2;
+            this.menuItemSync.Text = "Sync to Open Lecture...";
+            this.menuItemSync.Click += new System.EventHandler(this.menuItemSync_Click);
+            // 
+            // menuDisconnect
+            // 
+            this.menuDisconnect.Enabled = false;
+            this.menuDisconnect.Index = 3;
+            this.menuDisconnect.Shortcut = System.Windows.Forms.Shortcut.CtrlD;
+            this.menuDisconnect.Text = "Disconnect";
+            this.menuDisconnect.Click += new System.EventHandler(this.menuDisconnect_Click);
+            // 
+            // menuItem3
+            // 
+            this.menuItem3.Index = 4;
+            this.menuItem3.Text = "-";
+            // 
+            // menuOpenLecture
+            // 
+            this.menuOpenLecture.Index = 5;
+            this.menuOpenLecture.Shortcut = System.Windows.Forms.Shortcut.CtrlO;
+            this.menuOpenLecture.Text = "Open Lecture...";
+            this.menuOpenLecture.Click += new System.EventHandler(this.menuOpenLecture_Click);
+            // 
+            // menuItemClose
+            // 
+            this.menuItemClose.Enabled = false;
+            this.menuItemClose.Index = 6;
+            this.menuItemClose.Text = "Close Lecture";
+            this.menuItemClose.Click += new System.EventHandler(this.menuItemClose_Click);
+            // 
+            // menuSaveLecture
+            // 
+            this.menuSaveLecture.Enabled = false;
+            this.menuSaveLecture.Index = 7;
+            this.menuSaveLecture.Shortcut = System.Windows.Forms.Shortcut.CtrlS;
+            this.menuSaveLecture.Text = "Save Lecture";
+            this.menuSaveLecture.Click += new System.EventHandler(this.menuItem2_Click);
+            // 
+            // menuExportLecture
+            // 
+            this.menuExportLecture.Enabled = false;
+            this.menuExportLecture.Index = 8;
+            this.menuExportLecture.Text = "Export Lecture...";
+            this.menuExportLecture.Click += new System.EventHandler(this.menuExportLecture_Click);
+            // 
+            // menuItem4
+            // 
+            this.menuItem4.Index = 9;
+            this.menuItem4.Text = "-";
+            // 
+            // menuQuit
+            // 
+            this.menuQuit.Index = 10;
+            this.menuQuit.Shortcut = System.Windows.Forms.Shortcut.CtrlQ;
+            this.menuQuit.Text = "Exit";
+            this.menuQuit.Click += new System.EventHandler(this.menuQuit_Click);
+            // 
+            // menuItem6
+            // 
+            this.menuItem6.Index = 1;
+            this.menuItem6.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuItem7,
+            this.menuItem7_1,
+            this.menuItem8,
+            this.menuItem8_1,
+            this.changeSlidePreview,
+            this.menuItem_subThumbSize,
+            this.changeSubPreview,
+            this.menuItem9});
+            this.menuItem6.Text = "Slides";
+            // 
+            // menuItem7
+            // 
+            this.menuItem7.Index = 0;
+            this.menuItem7.Shortcut = System.Windows.Forms.Shortcut.AltDownArrow;
+            this.menuItem7.Text = "Next Slide";
+            this.menuItem7.Click += new System.EventHandler(this.menuItem7_Click);
+            // 
+            // menuItem7_1
+            // 
+            this.menuItem7_1.Index = 1;
+            this.menuItem7_1.Shortcut = System.Windows.Forms.Shortcut.AltRightArrow;
+            this.menuItem7_1.Text = "";
+            this.menuItem7_1.Visible = false;
+            this.menuItem7_1.Click += new System.EventHandler(this.menuItem7_Click);
+            // 
+            // menuItem8
+            // 
+            this.menuItem8.Index = 2;
+            this.menuItem8.Shortcut = System.Windows.Forms.Shortcut.AltUpArrow;
+            this.menuItem8.Text = "Previous Slide";
+            this.menuItem8.Click += new System.EventHandler(this.menuItem8_Click);
+            // 
+            // menuItem8_1
+            // 
+            this.menuItem8_1.Index = 3;
+            this.menuItem8_1.Shortcut = System.Windows.Forms.Shortcut.AltLeftArrow;
+            this.menuItem8_1.Text = "";
+            this.menuItem8_1.Visible = false;
+            this.menuItem8_1.Click += new System.EventHandler(this.menuItem8_Click);
+            // 
+            // changeSlidePreview
+            // 
+            this.changeSlidePreview.Index = 4;
+            this.changeSlidePreview.Text = "Slide Preview Size...";
+            this.changeSlidePreview.Click += new System.EventHandler(this.changeSlidePreview_Click);
+            // 
+            // menuItem_subThumbSize
+            // 
+            this.menuItem_subThumbSize.Index = 5;
+            this.menuItem_subThumbSize.Text = "Submission Thumb Size...";
+            this.menuItem_subThumbSize.Click += new System.EventHandler(this.menuItem_subThumbSize_Click);
+            // 
+            // changeSubPreview
+            // 
+            this.changeSubPreview.Index = 6;
+            this.changeSubPreview.Text = "Submission Preview Size...";
+            this.changeSubPreview.Click += new System.EventHandler(this.changeSubPreview_Click);
+            // 
+            // menuItem9
+            // 
+            this.menuItem9.Index = 7;
+            this.menuItem9.Shortcut = System.Windows.Forms.Shortcut.CtrlI;
+            this.menuItem9.Text = "Current Instructor Slide";
+            this.menuItem9.Visible = false;
+            this.menuItem9.Click += new System.EventHandler(this.menuItem9_Click);
+            // 
+            // menuItem2
+            // 
+            this.menuItem2.Index = 2;
+            this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuChangePen,
+            this.menuItem10,
+            this.menuItem5,
+            this.menuItemBgColor});
+            this.menuItem2.Text = "Ink";
+            // 
+            // menuChangePen
+            // 
+            this.menuChangePen.Index = 0;
+            this.menuChangePen.Text = "Current Pen Color...";
+            this.menuChangePen.Click += new System.EventHandler(this.menuChangePen_Click);
+            // 
+            // menuItem10
+            // 
+            this.menuItem10.Index = 1;
+            this.menuItem10.Text = "Restore Default Pen Color";
+            this.menuItem10.Click += new System.EventHandler(this.menuItem10_Click_2);
+            // 
+            // menuItem5
+            // 
+            this.menuItem5.Index = 2;
+            this.menuItem5.Text = "Current Ink Style...";
+            this.menuItem5.Click += new System.EventHandler(this.menuItem5_Click);
+            // 
+            // menuItemBgColor
+            // 
+            this.menuItemBgColor.Index = 3;
+            this.menuItemBgColor.Text = "Background Color...";
+            this.menuItemBgColor.Click += new System.EventHandler(this.menuItem10_Click_1);
+            // 
+            // helpMenu
+            // 
+            this.helpMenu.Index = 3;
+            this.helpMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuItem11,
+            this.menuItem1});
+            this.helpMenu.Text = "Help";
+            // 
+            // menuItem11
+            // 
+            this.menuItem11.Index = 0;
+            this.menuItem11.Text = "Projection FAQ";
+            this.menuItem11.Click += new System.EventHandler(this.menuItem11_Click);
+            // 
+            // menuItem1
+            // 
+            this.menuItem1.Index = 1;
+            this.menuItem1.Text = "About NoteTaker...";
+            this.menuItem1.Click += new System.EventHandler(this.menuItem1_Click);
+            // 
+            // mainSplitter
+            // 
+            this.mainSplitter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainSplitter.Location = new System.Drawing.Point(0, 40);
+            this.mainSplitter.Name = "mainSplitter";
+            // 
+            // mainSplitter.Panel1
+            // 
+            this.mainSplitter.Panel1.Controls.Add(this.slideList);
+            // 
+            // mainSplitter.Panel2
+            // 
+            this.mainSplitter.Panel2.Controls.Add(this.subPreviewPanel);
+            this.mainSplitter.Panel2.Controls.Add(this.inkPanel);
+            this.mainSplitter.Size = new System.Drawing.Size(804, 415);
+            this.mainSplitter.SplitterDistance = 156;
+            this.mainSplitter.TabIndex = 25;
+            // 
+            // slideList
+            // 
+            this.slideList.AutoScrollMargin = new System.Drawing.Size(1, 1);
+            this.slideList.AutoScrollMinSize = new System.Drawing.Size(1, 1);
+            this.slideList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.slideList.Location = new System.Drawing.Point(0, 0);
+            this.slideList.Name = "slideList";
+            this.slideList.Padding = new System.Windows.Forms.Padding(2);
+            this.slideList.PreviousSlideHadSubmissions = false;
+            this.slideList.SelectedIndex = 0;
+            this.slideList.Size = new System.Drawing.Size(156, 415);
+            this.slideList.SlideChangeDelegate = null;
+            this.slideList.TabIndex = 0;
+            this.slideList.Paint += new System.Windows.Forms.PaintEventHandler(this.slideList_Paint);
+            // 
+            // subPreviewPanel
+            // 
+            this.subPreviewPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.subPreviewPanel.AutoScroll = true;
+            this.subPreviewPanel.Location = new System.Drawing.Point(0, 0);
+            this.subPreviewPanel.Name = "subPreviewPanel";
+            this.subPreviewPanel.Size = new System.Drawing.Size(515, 619);
+            this.subPreviewPanel.TabIndex = 0;
+            this.subPreviewPanel.Visible = false;
+            // 
+            // inkPanel
+            // 
+            this.inkPanel.Color = System.Drawing.Color.Black;
+            this.inkPanel.InkEditingMode = Microsoft.Ink.InkOverlayEditingMode.Ink;
+            this.inkPanel.InkEnabled = false;
+            this.inkPanel.Location = new System.Drawing.Point(0, 0);
+            this.inkPanel.Name = "inkPanel";
+            this.inkPanel.Size = new System.Drawing.Size(200, 100);
+            this.inkPanel.Slide = null;
+            this.inkPanel.TabIndex = 1;
+            // 
+            // MainWindow
+            // 
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+            this.ClientSize = new System.Drawing.Size(804, 479);
+            this.Controls.Add(this.mainSplitter);
+            this.Controls.Add(this.statusBar);
+            this.Controls.Add(this.colorButtonsPanel);
+            this.Menu = this.mainMenu1;
+            this.MinimumSize = new System.Drawing.Size(400, 300);
+            this.Name = "MainWindow";
+            this.Text = "NoteTaker";
+            this.Shown += new System.EventHandler(this.MainWindow_Load);
+            this.colorButtonsPanel.ResumeLayout(false);
+            this.inkRadioPanel.ResumeLayout(false);
+            this.colorRadioPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.slideStatusBarPanel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.uploadQueueStatus)).EndInit();
+            this.mainSplitter.Panel1.ResumeLayout(false);
+            this.mainSplitter.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.mainSplitter)).EndInit();
+            this.mainSplitter.ResumeLayout(false);
+            this.ResumeLayout(false);
+
+        }
+
+        private void changeSubPreview_Click(object sender, EventArgs e)
 		{
 			SlidePreviewPanel.changeSubmissionSize();
 		}
@@ -1110,9 +1306,36 @@ namespace InstructorClient
 			newNoteOnCurrentSlide(true);
 		}
 
+        private void InitImageStreams()
+        {
+            const string resxFile = @"..\..\InstructorClient\ImageList.resx";
+
+            //string text = System.IO.File.ReadAllText(resxFile);
+
+            // Display the file contents to the console. Variable text is a string.
+            //System.Console.WriteLine("Contents of WriteText.txt = {0}", text);
+
+            using (ResXResourceSet resxSet = new ResXResourceSet(resxFile))
+            {
+                imList0.ImageStream = (ImageListStreamer) resxSet.GetObject("imList0.ImageStream");
+                imList1.ImageStream = (ImageListStreamer) resxSet.GetObject("imList1.ImageStream");
+                imList2.ImageStream = (ImageListStreamer) resxSet.GetObject("imList2.ImageStream");
+                imList3.ImageStream = (ImageListStreamer) resxSet.GetObject("imList3.ImageStream");
+            }
+        }
+
+        private void InitImageKeys(ImageList imList)
+        {
+            imList.TransparentColor = System.Drawing.Color.Transparent;
+            for (int i = 0; i < imList.Images.Count; i++)
+            {
+                imList.Images.SetKeyName(0, "");
+            }
+        }
+
 		private void MainWindow_Load(object sender, EventArgs e)
 		{
-			startupActions();
+            startupActions();
 		}
 
 		private void colorRadioBlack_CheckedChanged(object sender, EventArgs e)
@@ -1687,7 +1910,6 @@ namespace InstructorClient
 			int num = 0;
 			while (true)
 			{
-				bool flag = true;
 				Thread.Sleep(THREAD_SLEEP_TS);
 				num += THREAD_SLEEP_MS;
 				if (num >= REFRESH_TOTAL_MS)

@@ -217,7 +217,7 @@ namespace InstructorClient
 			}
 			ScrollControlIntoView(SelectedThumb);
 			Invalidate();
-			base.Parent.Invalidate();
+			//base.Parent.Invalidate();
 		}
 
 		public SlideListThumb CreateNewThumb(Slide s)
