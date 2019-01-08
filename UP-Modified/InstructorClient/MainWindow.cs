@@ -1505,7 +1505,7 @@ namespace InstructorClient
 		{
 			if (webService != null)
 			{
-				if (!webService.uploadQueueIsEmpty())
+                if (!webService.uploadQueueIsEmpty())
 				{
                     bool saveLecture = false;
 					switch (MessageBox.Show("Would you like to save your current lecture?", "Closing Lecture...", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1))
