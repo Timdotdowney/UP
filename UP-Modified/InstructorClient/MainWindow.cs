@@ -1505,7 +1505,7 @@ namespace InstructorClient
 		{
 			if (webService != null)
 			{
-                if (!webService.uploadQueueIsEmpty())
+                if (webService.uploadQueueIsEmpty() || MessageBox.Show("There are pending upload operations that will be lost if you close this lecture. Are you sure you want to continue?", "Pending Uploads", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
 				{
                     bool saveLecture = false;
 					switch (MessageBox.Show("Would you like to save your current lecture?", "Closing Lecture...", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1))
