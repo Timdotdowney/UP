@@ -227,6 +227,7 @@ namespace InstructorClient
 
 		private MenuItem changeSlidePreview;
         private SlideList slideList;
+        private MenuItem menuItem12;
         private MenuItem changeSubPreview;
 
 		private bool SubsEnabled
@@ -509,6 +510,7 @@ namespace InstructorClient
             this.slideList = new InstructorClient.SlideList();
             this.subPreviewPanel = new InstructorClient.SubmissionPreviewPanel();
             this.inkPanel = new InstructorClient.InkPanel();
+            this.menuItem12 = new System.Windows.Forms.MenuItem();
             this.colorButtonsPanel.SuspendLayout();
             this.inkRadioPanel.SuspendLayout();
             this.colorRadioPanel.SuspendLayout();
@@ -936,7 +938,8 @@ namespace InstructorClient
             this.fileMenu,
             this.menuItem6,
             this.menuItem2,
-            this.helpMenu});
+            this.helpMenu,
+            this.menuItem12});
             // 
             // fileMenu
             // 
@@ -1208,6 +1211,12 @@ namespace InstructorClient
             this.inkPanel.Size = new System.Drawing.Size(200, 100);
             this.inkPanel.Slide = null;
             this.inkPanel.TabIndex = 1;
+            // 
+            // menuItem12
+            // 
+            this.menuItem12.Index = 4;
+            this.menuItem12.Text = "Read";
+            this.menuItem12.Click += new System.EventHandler(this.menuItemRead_Click);
             // 
             // MainWindow
             // 
@@ -2463,5 +2472,15 @@ namespace InstructorClient
 			uploadQueueStatus.Text = msg;
 			statusBar.Invalidate();
 		}
-	}
+
+        private void menuItemRead_Click(object sender, EventArgs e)
+        {
+            startLocalLecture(null);
+            FormReadStrokes dlg = new FormReadStrokes();
+            {
+                dlg.Slides = slideList.Slides;
+                dlg.Show(this);
+            }
+        }
+    }
 }

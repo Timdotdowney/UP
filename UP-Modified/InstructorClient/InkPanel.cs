@@ -168,7 +168,7 @@ namespace InstructorClient
 				}
 				if (slide.Ink != null)
 				{
-					inkOverlay.Renderer.Draw(e.Graphics, Slide.Ink.Strokes);
+					inkOverlay.Renderer.Draw(e.Graphics, Slide.Ink.Strokes);                  
 				}
 			}
 		}

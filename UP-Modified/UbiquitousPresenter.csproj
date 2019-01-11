@@ -27,6 +27,10 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SlideModel, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>SlideModel\bin\Debug\SlideModel.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms">
       <HintPath>C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\System.Windows.Forms\v4.0_4.0.0.0__b77a5c561934e089\System.Windows.Forms.dll</HintPath>
@@ -39,9 +43,6 @@
     </Reference>
     <Reference Include="System">
       <HintPath>C:\windows\Microsoft.Net\assembly\GAC_MSIL\System\v4.0_4.0.0.0__b77a5c561934e089\System.dll</HintPath>
-    </Reference>
-    <Reference Include="SlideModel">
-      <HintPath>E:\up\SlideModel.dll</HintPath>
     </Reference>
     <Reference Include="NetworkIO">
       <HintPath>E:\up\NetworkIO.dll</HintPath>
@@ -58,6 +59,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InstructorClient\FormMSDNExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InstructorClient\FormMSDNExample.Designer.cs">
+      <DependentUpon>FormMSDNExample.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InstructorClient\FormReadStrokes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InstructorClient\FormReadStrokes.Designer.cs">
+      <DependentUpon>FormReadStrokes.cs</DependentUpon>
+    </Compile>
     <Compile Include="InstructorClient.Properties\Resources.cs" />
     <Compile Include="InstructorClient\ChangeUploadQueueStatusDelegate.cs" />
     <Compile Include="InstructorClient\CustomColors.cs" />
@@ -108,6 +121,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="InstructorClient.Properties\Resources.resx" />
+    <EmbeddedResource Include="InstructorClient\FormMSDNExample.resx">
+      <DependentUpon>FormMSDNExample.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InstructorClient\FormReadStrokes.resx">
+      <DependentUpon>FormReadStrokes.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="InstructorClient\MainWindow.resx" />
     <EmbeddedResource Include="InstructorClient\Resources.PresenterIcon.ico" />
     <EmbeddedResource Include="InstructorClient\ImageList.resx" />
