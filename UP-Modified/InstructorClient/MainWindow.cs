@@ -1507,19 +1507,19 @@ namespace InstructorClient
 			{
                 if (webService.uploadQueueIsEmpty() || MessageBox.Show("There are pending upload operations that will be lost if you close this lecture. Are you sure you want to continue?", "Pending Uploads", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
 				{
-                    bool saveLecture = false;
+                    bool close = false;
 					switch (MessageBox.Show("Would you like to save your current lecture?", "Closing Lecture...", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1))
 					{
 					case DialogResult.Cancel:
                         return false;
 					case DialogResult.Yes:
-						saveLecture = saveCurrentLecture();
+						close = saveCurrentLecture();
 						break;
 					case DialogResult.No:
-						saveLecture = false;
+						close = true;
 						break;
 					}
-					if (!saveLecture)
+					if (close)
 					{
 						Disconnect();
 						stopInkThread();
